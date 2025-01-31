@@ -6,7 +6,7 @@ const Login = () => {
     const [current, setCurrent]= useState("Sign Up")
   return (
     <div className='Login'>
-        <img src={assets.logo_big} alt=""  className='Logo'/>
+        <img  className='Logo' src={assets.logo_big} alt="" />
 
         <form action="" className='Login-form'>
             <h2>{current}</h2>
