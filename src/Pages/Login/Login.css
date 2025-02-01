@@ -59,3 +59,80 @@
     color: #077EFE;
     cursor: pointer;
 }
+
+
+@media (max-width: 768px) {
+    .Login {
+        padding: 10px;
+    }
+
+    .Logo {
+        width: 120px;
+    }
+
+    .Login-form {
+        padding: 15px;
+    }
+
+    .Login-form h2 {
+        font-size: 20px;
+    }
+
+    .form-input {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    .login-term p {
+        font-size: 12px;
+    }
+
+    .loginToggle {
+        font-size: 12px;
+    }
+}
+
+/* For mobile phones */
+@media (max-width: 480px) {
+    .Login {
+        padding: 5px;
+    }
+
+    .Logo {
+        width: 100px;
+        margin-bottom: 10px; 
+    }
+
+    .Login-form {
+        padding: 10px;
+        max-width: 90%; 
+    }
+
+    .Login-form h2 {
+        font-size: 18px;
+    }
+
+    .form-input {
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 12px;
+    }
+
+    .login-term p {
+        font-size: 10px;
+    }
+
+    .loginToggle {
+        font-size: 10px;
+    }
+
+    
+    .Login {
+        flex-direction: column; 
+    }
+}

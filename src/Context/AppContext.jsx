@@ -1,10 +1,12 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { createContext, useState } from "react";
-import { db } from "../config/Firebase";
+import { auth, db } from "../config/Firebase";
+import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
 
 const AppContextProvider = (props)=>{
+    const navigate = useNavigate();
 
     const [userData, setUserData]= useState(null)
     const [chatData, setChatData]= useState(null)
@@ -16,7 +18,28 @@ const AppContextProvider = (props)=>{
             const userData = userSnap.data();
 
             console.log(userData)
-            
+
+            if(userData.avatar &&  userData.name){
+                navigate('/chat');
+
+            }
+            else{
+                navigate('/profile')
+            }
+            await updateDoc(userRef, {
+                lastSeen: Date.now()
+            })
+            setInterval(async()=>{
+                if(auth.chatUser){
+                    await updateDoc(userRef, {
+                        lastSeen: Date.now()
+                    })
+                    
+
+                }
+                
+
+            }, 60000)
         } catch (error) {
             
         }
