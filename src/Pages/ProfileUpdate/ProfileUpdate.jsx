@@ -11,37 +11,40 @@ import upload from '../../lib/Upload'
 const ProfileUpdate = () => {
   const navigate = useNavigate()
   const [name, setName] = useState("")
-  const [bio, setBio] = useState("")  // Corrected variable name
+  const [bio, setBio] = useState("") 
   const [uid, setUid] = useState("")
   const [prevImg, setPrevImg] = useState("")
 
   const profileUpdate = async (event) => {
     event.preventDefault();
     try {
+      if (!uid) {
+        toast.error("User ID not found. Please log in again.");
+        return;
+      }
+  
       if (!prevImg && !image) {
-        toast.error("Upload Profile picture")
+        toast.error("Upload Profile picture");
+        return;
       }
-      const docRef = doc(db, 'users', uid)
+  
+      const docRef = doc(db, 'users', uid); // Ensure UID is valid
+  
       if (image) {
-        const imageUrl = await upload(image);  // Upload the image and get URL
-        setPrevImg(imageUrl)
-        await updateDoc(docRef, {
-          avatar: imageUrl,
-          bio: bio,
-          name: name
-        })
+        const imageUrl = await upload(image);
+        setPrevImg(imageUrl);
+        await updateDoc(docRef, { avatar: imageUrl, bio, name });
+      } else {
+        await updateDoc(docRef, { bio, name });
       }
-      else {
-        await updateDoc(docRef, {
-          bio: bio,
-          name: name
-        })
-      }
-      toast.success("Profile updated successfully!")
+  
+      toast.success("Profile updated successfully!");
     } catch (error) {
-      toast.error("Something went wrong")
+      console.error("Firestore update error:", error);
+      toast.error("Something went wrong");
     }
-  }
+  };
+  
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -53,7 +56,7 @@ const ProfileUpdate = () => {
           setName(docSnap.data().name)
         }
         if (docSnap.data().bio) {
-          setBio(docSnap.data().bio)  // Corrected variable name
+          setBio(docSnap.data().bio) 
         }
         if (docSnap.data().avatar) {
           setPrevImg(docSnap.data().avatar)
