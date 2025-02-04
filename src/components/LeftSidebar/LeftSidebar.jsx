@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
-  const { userData, chatData, setChatData } = useContext(AppContext);
+  const { userData, chatData, setChatData , chatuser, setChatUser,messagesIdm,setMessagesId} = useContext(AppContext);
   const [users, setUsers] = useState(null);
   const [search, setSearch] = useState(false);
 
@@ -108,7 +108,8 @@ const LeftSidebar = () => {
     }
   };
   const setChat = async(item)=>{
-    console.log(item);
+    setMessagesId(item.messagesIdm);
+    setChatUser(item);
     
   }
   
@@ -149,7 +150,7 @@ const LeftSidebar = () => {
         <img src={item.userData.avatar} alt="Profile" />
         <div>
           <p>{item.userData.name}</p>
-          <span>{item.lastMessage || "No messages yet"}</span>
+          <span>{item.userData.lastMessage || "No messages yet"}</span>
         </div>
       </div>
     ))

@@ -10,6 +10,9 @@ const AppContextProvider = (props) => {
     const [userData, setUserData] = useState(null);
     const [chatData, setChatData] = useState(null);
     const lastSeenIntervalRef = useRef(null); // Use ref instead of state
+    const [messagesIdm, setMessagesId] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [chatuser, setChatUser] = useState(null);
 
     const loadUserData = async (uid) => {
         try {
@@ -45,6 +48,24 @@ const AppContextProvider = (props) => {
 
         } catch (error) {
             console.error("Error loading user data:", error);
+        }
+    };
+
+    const loadChatUserData = async (chatUserId) => {
+        try {
+            const chatUserRef = doc(db, 'users', chatUserId);
+            const chatUserSnap = await getDoc(chatUserRef);
+
+            if (!chatUserSnap.exists()) {
+                console.error("Chat user data not found.");
+                return;
+            }
+
+            const fetchedChatUserData = chatUserSnap.data();
+            console.log("Chat User Data:", fetchedChatUserData);
+            setChatUser(fetchedChatUserData);
+        } catch (error) {
+            console.error("Error loading chat user data:", error);
         }
     };
 
@@ -84,7 +105,7 @@ const AppContextProvider = (props) => {
     }, [userData]);
 
     return (
-        <AppContext.Provider value={{ userData, setUserData, chatData, setChatData, loadUserData }}>
+        <AppContext.Provider value={{ userData, setUserData, chatData, setChatData, loadUserData, loadChatUserData, messages, setMessages, messagesIdm, setMessagesId, chatuser, setChatUser }}>
             {props.children}
         </AppContext.Provider>
     );
